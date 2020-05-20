@@ -1,2 +1,2 @@
-# NMT Assignment
-Note: Heavily inspired by the https://github.com/pcyin/pytorch_nmt repository
+# Vietnamese - English nmt
+This is built based on the skelenton code given by Stanford cs224n's assignment 4

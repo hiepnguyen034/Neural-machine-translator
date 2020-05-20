@@ -21,4 +21,4 @@ class ModelEmbeddings(nn.Module):
         self.source = nn.Embedding(len(vocab.src),self.embed_size, padding_idx = src_pad_token_idx)
         self.target = nn.Embedding(len(vocab.tgt) ,self.embed_size, padding_idx = tgt_pad_token_idx)
 
-
+            

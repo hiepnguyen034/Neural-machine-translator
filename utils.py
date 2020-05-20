@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import codecs
 
 def pad_sents(sents, pad_token):
 	""" Pad list of sentences according to the longest sentence in the batch.
@@ -20,7 +20,7 @@ def pad_sents(sents, pad_token):
 	max_val = max([len(sent) for sent in sents])
 	for sentence in sents:
 		if len(sentence) < max_val:
-			while len(sentence) < max_val:
+			while len(sentence) < max_val:	
 				sentence.append(pad_token)
 		sents_padded.append(sentence)
 
@@ -36,7 +36,7 @@ def read_corpus(file_path, source):
 		is of the source language or target language
 	"""
 	data = []
-	for line in open(file_path,encoding = 'cp437'):
+	for line in codecs.open(file_path,encoding = 'cp720'):
 		sent = line.strip().split(' ')
 		# only append <s> and </s> to the target sentence
 		if source == 'tgt':

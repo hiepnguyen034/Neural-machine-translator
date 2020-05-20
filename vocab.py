@@ -20,6 +20,7 @@ from utils import read_corpus, pad_sents
 import pandas as pd 
 import numpy as np
 
+import codecs
 
 class BuildDataset(object):
     """
@@ -205,7 +206,9 @@ class Vocab(object):
         """ Save Vocab to file as JSON dump.
         @param file_path (str): file path to vocab file
         """
-        json.dump(dict(src_word2id=self.src.word2id, tgt_word2id=self.tgt.word2id), open(file_path, 'w'), indent=2)
+        json.dump(dict(src_word2id=self.src.word2id, tgt_word2id=self.tgt.word2id), codecs.open(file_path, 'w',encoding='cp720'), 
+                indent=2, ensure_ascii=False
+                )
 
     @staticmethod
     def load(file_path):
@@ -213,7 +216,7 @@ class Vocab(object):
         @param file_path (str): file path to vocab file
         @returns Vocab object loaded from JSON dump
         """
-        entry = json.load(open(file_path, 'r'))
+        entry = json.load(codecs.open(file_path, 'r',encoding='cp720'))
         src_word2id = entry['src_word2id']
         tgt_word2id = entry['tgt_word2id']
 

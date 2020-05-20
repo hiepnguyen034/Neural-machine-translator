@@ -30,7 +30,7 @@ Options:
     --uniform-init=<float>                  uniformly initialize all parameters [default: 0.1]
     --save-to=<file>                        model save path [default: model.bin]
     --valid-niter=<int>                     perform validation after how many iterations [default: 2000]
-    --dropout=<float>                       dropout [default: 0.3]
+    --dropout=<float>                       dropout [default: 0.3]uni
     --max-decoding-time-step=<int>          maximum number of decoding time steps [default: 70]
 """
 import math
@@ -146,6 +146,7 @@ def train(args: Dict):
     print('begin Maximum Likelihood training')
 
     while True:
+        print('currently run epoch {}'.format(epoch))
         epoch += 1
 
         for src_sents, tgt_sents in batch_iter(train_data, batch_size=train_batch_size, shuffle=True):
@@ -177,6 +178,8 @@ def train(args: Dict):
             cum_examples += batch_size
 
             if train_iter % log_every == 0:
+                print('-'*15)
+                print('first condition')
                 print('epoch %d, iter %d, avg. loss %.2f, avg. ppl %.2f ' \
                       'cum. examples %d, speed %.2f words/sec, time elapsed %.2f sec' % (epoch, train_iter,
                                                                                          report_loss / report_examples,
@@ -190,6 +193,7 @@ def train(args: Dict):
 
             # perform validation
             if train_iter % valid_niter == 0:
+                print('second condition')
                 print('epoch %d, iter %d, cum. loss %.2f, cum. ppl %.2f cum. examples %d' % (epoch, train_iter,
                                                                                          cum_loss / cum_examples,
                                                                                          np.exp(cum_loss / cum_tgt_words),
@@ -245,7 +249,9 @@ def train(args: Dict):
 
                         # reset patience
                         patience = 0
-
+                print('-'*20)
+                print('Check if about to end')
+                
                 if epoch == int(args['--max-epoch']):
                     print('reached maximum number of epochs!', file=sys.stderr)
                     exit(0)
