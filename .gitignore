@@ -4,4 +4,6 @@ __pycache__
 *.zip
 *.ipynb_checkpoints
 sanity_check.py
+*.bin
+*.bin.optim
 
