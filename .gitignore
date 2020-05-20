@@ -3,4 +3,5 @@ __pycache__
 .ipnyb_checkpoints
 *.zip
 *.ipynb_checkpoints
+sanity_check.py
 
