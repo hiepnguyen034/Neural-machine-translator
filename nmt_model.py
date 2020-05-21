@@ -32,7 +32,6 @@ class NMT(nn.Module):
         self.dropout_rate = dropout_rate
         self.vocab = vocab
         self.encoder = nn.LSTM(input_size = embed_size, hidden_size = self.hidden_size,bias=True, bidirectional= True)
-        #TODO: Why input_size =self.model_embeddings.embed_size+ self.hidden_size????
         self.decoder = nn.LSTMCell(input_size =self.model_embeddings.embed_size+ self.hidden_size , hidden_size= self.hidden_size, bias=True)
         self.h_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
         self.c_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
@@ -115,8 +114,6 @@ class NMT(nn.Module):
 
         dec_init_state = (init_decoder_hidden, init_decoder_cell)
 
-        ### END YOUR CODE
-
         return enc_hiddens, dec_init_state
 
 
@@ -163,7 +160,7 @@ class NMT(nn.Module):
 
             combined_outputs.append(o_t)
             o_prev = o_t
-
+            
         combined_outputs = torch.stack(combined_outputs,dim =0)           
         
         return combined_outputs
@@ -220,7 +217,6 @@ class NMT(nn.Module):
         V_t = self.combined_output_projection(U_t)
         O_t = torch.tanh(V_t)
         O_t = self.dropout(O_t)
-        ### END YOUR CODE
 
         combined_output = O_t
         return dec_state, combined_output, e_t

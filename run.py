@@ -4,6 +4,7 @@ Usage:
     run.py train --train-src=<file> --train-tgt=<file> --dev-src=<file> --dev-tgt=<file> --vocab=<file> [options]
     run.py decode [options] MODEL_PATH TEST_SOURCE_FILE OUTPUT_FILE
     run.py decode [options] MODEL_PATH TEST_SOURCE_FILE TEST_TARGET_FILE OUTPUT_FILE
+    run.py translate [options] MODEL_PATH INPUT_SENTENCE
 
 Options:
     -h --help                               show this screen.
@@ -50,6 +51,8 @@ from vocab import Vocab, VocabEntry
 
 import torch
 import torch.nn.utils
+
+import argparse
 
 
 def evaluate_ppl(model, dev_data, batch_size=32):
@@ -251,7 +254,7 @@ def train(args: Dict):
                         patience = 0
                 print('-'*20)
                 print('Check if about to end')
-                
+
                 if epoch == int(args['--max-epoch']):
                     print('reached maximum number of epochs!', file=sys.stderr)
                     exit(0)
@@ -314,14 +317,28 @@ def beam_search(model: NMT, test_data_src: List[List[str]], beam_size: int, max_
 
     return hypotheses
 
+def translate(args):
+
+    input_sent = read_corpus(args['INPUT_SENTENCE'], source='src')
+    print("load model from {}".format(args['MODEL_PATH']), file=sys.stderr)
+    model = NMT.load(args['MODEL_PATH'])    
+    
+    if args['--cuda']:
+        model = model.to(torch.device("cuda:0"))
+
+    hypotheses = beam_search(model, input_sent,
+                             beam_size=int(args['--beam-size']),
+                             max_decoding_time_step=int(args['--max-decoding-time-step']))
+    output_translation = [hyps[0] for hyps in hypotheses]
+    print(output_translation)
+    return output_translation
+
 
 def main():
     """ Main func.
     """
     args = docopt(__doc__)
     # Check pytorch version
-   # assert(torch.__version__ == "1.0.0"), "Please update your installation of PyTorch. You have {} and you should have version 1.0.0".format(torch.__version__)
-
     # seed the random number generators
     seed = int(args['--seed'])
     torch.manual_seed(seed)
@@ -333,9 +350,12 @@ def main():
         train(args)
     elif args['decode']:
         decode(args)
+    elif args['translate']:
+        translate(args)
     else:
         raise RuntimeError('invalid run mode')
 
 
 if __name__ == '__main__':
+
     main()

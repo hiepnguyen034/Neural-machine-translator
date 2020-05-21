@@ -7,3 +7,6 @@ sanity_check.py
 *.bin
 *.bin.optim
 .DS_Store
+*.txt
+eng_vie_data/glove.6B.50d.txt
+
