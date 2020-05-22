@@ -17,7 +17,7 @@ class NMT(nn.Module):
         - Unidirection LSTM Decoder
         - Global Attention Model (Luong, et al. 2015)
     """
-    def __init__(self, embed_size, hidden_size, vocab, dropout_rate=0.2):
+    def __init__(self, embed_size_src, embed_size_tgt, hidden_size, vocab, dropout_rate=0.2):
         """ Init NMT Model.
 
         @param embed_size (int): Embedding size (dimensionality)
@@ -27,12 +27,12 @@ class NMT(nn.Module):
         @param dropout_rate (float): Dropout probability, for attention
         """
         super(NMT, self).__init__()
-        self.model_embeddings = ModelEmbeddings(embed_size, vocab)
+        self.model_embeddings = ModelEmbeddings(embed_size_src, embed_size_tgt, vocab)
         self.hidden_size = hidden_size
         self.dropout_rate = dropout_rate
         self.vocab = vocab
-        self.encoder = nn.LSTM(input_size = embed_size, hidden_size = self.hidden_size,bias=True, bidirectional= True)
-        self.decoder = nn.LSTMCell(input_size =self.model_embeddings.embed_size+ self.hidden_size , hidden_size= self.hidden_size, bias=True)
+        self.encoder = nn.LSTM(input_size = embed_size_src, hidden_size = self.hidden_size,bias=True, bidirectional= True)
+        self.decoder = nn.LSTMCell(input_size =self.model_embeddings.embed_size_tgt+ self.hidden_size , hidden_size= self.hidden_size, bias=True)
         self.h_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
         self.c_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
         self.att_projection = nn.Linear(2*self.hidden_size,self.hidden_size)
@@ -353,7 +353,8 @@ class NMT(nn.Module):
         print('save model parameters to [%s]' % path, file=sys.stderr)
 
         params = {
-            'args': dict(embed_size=self.model_embeddings.embed_size, hidden_size=self.hidden_size, dropout_rate=self.dropout_rate),
+            'args': dict(embed_size_src=self.model_embeddings.embed_size_src, embed_size_tgt = self.model_embeddings.embed_size_tgt,
+                             hidden_size=self.hidden_size, dropout_rate=self.dropout_rate),
             'vocab': self.vocab,
             'state_dict': self.state_dict()
         }

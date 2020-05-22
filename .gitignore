@@ -9,4 +9,4 @@ sanity_check.py
 .DS_Store
 *.txt
 eng_vie_data/glove.6B.50d.txt
-
+eng_vie_data/wiki.vi.model.bin

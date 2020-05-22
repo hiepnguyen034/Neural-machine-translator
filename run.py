@@ -16,7 +16,8 @@ Options:
     --vocab=<file>                          vocab file
     --seed=<int>                            seed [default: 0]
     --batch-size=<int>                      batch size [default: 32]
-    --embed-size=<int>                      embedding size [default: 50]
+    --embed-size-tgt=<int>                  embedding size for target [default: 50]
+    --embed-size-src= <int>                 embedding size for source [default: 400]
     --hidden-size=<int>                     hidden size [default: 256]
     --clip-grad=<float>                     gradient clipping [default: 5.0]
     --log-every=<int>                       log every [default: 10]
@@ -119,7 +120,8 @@ def train(args: Dict):
 
     vocab = Vocab.load(args['--vocab'])
 
-    model = NMT(embed_size=int(args['--embed-size']),
+    model = NMT(embed_size_src=int(args['--embed-size-src']),
+                embed_size_tgt = int(args['--embed-size-tgt']),
                 hidden_size=int(args['--hidden-size']),
                 dropout_rate=float(args['--dropout']),
                 vocab=vocab)
