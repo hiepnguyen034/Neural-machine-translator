@@ -32,7 +32,7 @@ class NMT(nn.Module):
         self.dropout_rate = dropout_rate
         self.vocab = vocab
         self.encoder = nn.LSTM(input_size = embed_size_src, hidden_size = self.hidden_size,bias=True, bidirectional= True)
-        self.decoder = nn.LSTMCell(input_size =self.model_embeddings.embed_size_tgt+ self.hidden_size , hidden_size= self.hidden_size, bias=True)
+        self.decoder = nn.LSTMCell(input_size = embed_size_tgt+ self.hidden_size , hidden_size= self.hidden_size, bias=True)
         self.h_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
         self.c_projection = nn.Linear(2*self.hidden_size,self.hidden_size,bias=False)
         self.att_projection = nn.Linear(2*self.hidden_size,self.hidden_size)
@@ -88,7 +88,6 @@ class NMT(nn.Module):
         @returns dec_init_state (tuple(Tensor, Tensor)): Tuple of tensors representing the decoder's initial
                                                 hidden state and cell.
         """
-        enc_hiddens, dec_init_state = None, None
 
         src_len,  b = source_padded.shape
         X = self.model_embeddings.source(source_padded)
@@ -193,7 +192,6 @@ class NMT(nn.Module):
                                       your implementation.
         """
 
-        combined_output = None
         dec_state = self.decoder(Ybar_t,dec_state)
         (dec_hidden,dec_cell) = dec_state
 

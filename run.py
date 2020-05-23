@@ -26,7 +26,7 @@ Options:
     --patience=<int>                        wait for how many iterations to decay learning rate [default: 5]
     --max-num-trial=<int>                   terminate training after how many trials [default: 5]
     --lr-decay=<float>                      learning rate decay [default: 0.5]
-    --beam-size=<int>                       beam size [default: 5]
+    --beam-size=<int>                       beam size [default: 25]
     --sample-size=<int>                     sample size [default: 5]
     --lr=<float>                            learning rate [default: 0.001]
     --uniform-init=<float>                  uniformly initialize all parameters [default: 0.1]
@@ -254,8 +254,6 @@ def train(args: Dict):
 
                         # reset patience
                         patience = 0
-                print('-'*20)
-                print('Check if about to end')
 
                 if epoch == int(args['--max-epoch']):
                     print('reached maximum number of epochs!', file=sys.stderr)

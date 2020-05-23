@@ -61,7 +61,6 @@ class ModelEmbeddings(nn.Module):
 
     def get_embedding_matrix(self,vocab_src, vocab, embed_size, w2v_file):
         #open gloves
-        print('-'*20)
         if w2v_file[::-1][:3][::-1] == 'txt':
             with codecs.open(w2v_file,'r', encoding="cp720") as f:
                 words = set()
