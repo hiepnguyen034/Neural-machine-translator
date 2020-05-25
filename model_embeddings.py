@@ -61,7 +61,7 @@ class ModelEmbeddings(nn.Module):
 
     def get_embedding_matrix(self,vocab_src, vocab, embed_size, w2v_file):
         #open gloves
-        if w2v_file[::-1][:3][::-1] == 'txt':
+        if w2v_file[len(w2v_file)-3:] == 'txt':
             with codecs.open(w2v_file,'r', encoding="cp720") as f:
                 words = set()
                 word_to_vec_map = {}
@@ -71,7 +71,7 @@ class ModelEmbeddings(nn.Module):
                     words.add(curr_word)
                     word_to_vec_map[curr_word] = np.array(line[1:], dtype=np.float64)
 
-        elif w2v_file[::-1][:3][::-1] == 'bin': #'wiki.vi.model.bin'
+        elif w2v_file[len(w2v_file)-3:] == 'bin': #'wiki.vi.model.bin'
             word_to_vec_map = KeyedVectors.load_word2vec_format(w2v_file,binary=True)
 
         if vocab_src == 'target':
