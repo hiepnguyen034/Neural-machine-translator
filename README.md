@@ -3,7 +3,9 @@ You can use your own pre-trained word-embeddings or use
 
 (i) GloVe embeddings (download [here](https://nlp.stanford.edu/projects/glove/))
 
-(ii) Vietnamese wiki embeddings (download [here](https://drive.google.com/file/d/0B1GKSX6YCHXlakkzQ2plZVdUUE0/view))
+(ii) Vietnamese wiki embeddings (download [here](https://drive.google.com/file/d/0B1GKSX6YCHXlakkzQ2plZVdUUE0/view)),
+
+which are the default embeddings in the implementation
 
 use `python vocab.py --train-src=[vietnamese texts] --train-tgt =[english texts] [output_file]` to generate vocab dictionaries as json
 
